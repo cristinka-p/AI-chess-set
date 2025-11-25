@@ -94,6 +94,12 @@
       color: var(--accent);
     }
 
+    h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
     p {
       margin-bottom: 1rem;
     }
@@ -124,10 +130,15 @@
       font-weight: 500;
       margin-bottom: 1rem;
       user-select: none;
+      border: 1px solid var(--border);
     }
 
-    summary:hover {
-      background-color: color-mix(in srgb, var(--section-bg) 90%, var(--accent) 10%);
+    [data-theme="light"] summary:hover {
+      background-color: #e2e8f0; /* светло-серый */
+    }
+
+    [data-theme="dark"] summary:hover {
+      background-color: #334155; /* темно-серый */
     }
 
     details > div {
@@ -150,6 +161,32 @@
 
     [data-theme="dark"] .image-placeholder {
       background-color: #1e293b;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background-color: var(--section-bg);
+      color: var(--text);
+      resize: vertical;
+      min-height: 100px;
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.25rem;
+      right: 0.25rem;
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 1rem;
     }
   </style>
 </head>
@@ -196,14 +233,23 @@
         <details>
           <summary>🖼️ Примеры промптов</summary>
           <div>
-            <p><strong>Для музыкальных фигур (на английском):</strong><br>
-              — «A white chess pawn shaped like a musical sharp symbol (#), smooth surface, classic chess proportions, circular base diameter 35mm, studio lighting, transparent background, high detail»<br>
-              — «A black chess rook as a tuba, matte metal texture, height 70mm, stable base, isolated on transparent background»
-            </p>
-            <p><strong>Для морских фигур:</strong><br>
-              — «A white chess knight as a seahorse, golden-yellow, smooth curves, chess-piece proportions, transparent background»<br>
-              — «A black chess pawn as a deep-sea fish, violet-blue scales, height 50mm, circular base»
-            </p>
+            <h3>На русском языке:</h3>
+            <div style="position: relative; margin-bottom: 1rem;">
+              <textarea id="prompts-ru" readonly>Белая пешка: «Изображение белой шахматной пешки в виде музыкального знака диеза (#), гладкая поверхность, классические пропорции шахматной фигуры, круглое основание диаметром 35 мм, студийное освещение, прозрачный фон, высокая детализация»
+Чёрная ладья: «Изображение чёрной шахматной ладьи в виде тубы, матовая металлическая текстура, высота 70 мм, устойчивое основание, изолированное на прозрачном фоне»
+Белый конь: «Изображение белой шахматной фигуры коня в виде морского конька, золотисто-жёлтый, плавные изгибы, пропорции шахматной фигуры, прозрачный фон»
+Чёрная пешка: «Изображение чёрной шахматной пешки в виде глубоководной рыбы, фиолетово-синяя чешуя, высота 50 мм, круглое основание»</textarea>
+              <button class="copy-btn" data-target="prompts-ru">📋</button>
+            </div>
+
+            <h3>На английском языке:</h3>
+            <div style="position: relative;">
+              <textarea id="prompts-en" readonly>White pawn: «A white chess pawn shaped like a musical sharp symbol (#), smooth surface, classic chess proportions, circular base diameter 35mm, studio lighting, transparent background, high detail»
+Black rook: «A black chess rook as a tuba, matte metal texture, height 70mm, stable base, isolated on transparent background»
+White knight: «A white chess knight as a seahorse, golden-yellow, smooth curves, chess-piece proportions, transparent background»
+Black pawn: «A black chess pawn as a deep-sea fish, violet-blue scales, height 50mm, circular base»</textarea>
+              <button class="copy-btn" data-target="prompts-en">📋</button>
+            </div>
           </div>
         </details>
       </section>
@@ -374,6 +420,22 @@
         localStorage.setItem('theme', 'dark');
         toggle.textContent = '🌙';
       }
+    });
+
+    // Обработчик кнопок копирования
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const targetId = button.getAttribute('data-target');
+        const targetElement = document.getElementById(targetId);
+        targetElement.select();
+        document.execCommand('copy');
+        // Визуальная обратная связь
+        const originalText = button.textContent;
+        button.textContent = '✓';
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 2000);
+      });
     });
   </script>
 </body>
